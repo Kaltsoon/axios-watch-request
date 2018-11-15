@@ -1,0 +1,14 @@
+{
+  "name": "axios-watch-request",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Kaltsoon/axios-watch-request.git",
+  "author": "Kalle Ilves <kalleilv@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "tiny-emitter": "^2.0.2"
+  },
+  "devDependencies": {
+    "axios": "^0.18.0"
+  }
+}
