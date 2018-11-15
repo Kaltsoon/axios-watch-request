@@ -5,10 +5,22 @@
   "repository": "git@github.com:Kaltsoon/axios-watch-request.git",
   "author": "Kalle Ilves <kalleilv@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "yarn ava"
+  },
+  "ava": {
+    "require": [
+      "esm"
+    ]
+  },
   "dependencies": {
+    "any-observable": "^0.3.0",
     "tiny-emitter": "^2.0.2"
   },
   "devDependencies": {
-    "axios": "^0.18.0"
+    "ava": "^0.25.0",
+    "axios": "^0.18.0",
+    "esm": "^3.0.84",
+    "zen-observable": "^0.8.11"
   }
 }

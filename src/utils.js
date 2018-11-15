@@ -1,3 +1,5 @@
+import Observable from 'any-observable';
+
 export const serializeConfig = config => {
 	return `${config.method.toLowerCase()}__${config.url}`;
 };

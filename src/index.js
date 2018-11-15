@@ -17,7 +17,7 @@ export default ({ adapter, cache = makeCache() } = {}) => {
       	config,
         payload: {
         	loading: false,
-          data: cacheValue.data,
+          data: cacheValue,
           error: null,
         },
       });
@@ -34,26 +34,30 @@ export default ({ adapter, cache = makeCache() } = {}) => {
     
     return adapter(config)
     	.then(response => {
+        const parsedData = JSON.parse(response.data);
+
       	eventEmitter.emit('data', {
         	config,
           payload: {
           	loading: false,
-         		data: response.data,
+         		data: parsedData,
             error: null,
           },
         });
         
-        cache && cache.set(config, response.data);
+        cache && cache.set(config, parsedData);
       
       	return response;
       })
       .catch(response => {
+        const parsedData = JSON.parse(response.data);
+
       	eventEmitter.emit('data', {
         	config,
           payload: {
           	loading: false,
          		data: null,
-            error: response.data,
+            error: parsedData,
           },
         });
         
