@@ -38,4 +38,4 @@ The library utilizes simple cache and it operates by "cache and network" policy.
 
 ## Why do I need it?
 
-In the client applications, it is quite natural to subscribe into a certain data source and observe its changes. On top of that, it is convenient to be able to able refetch data anywhere in the application, and pass the fresh data to everyone intrested in it.
+In the client applications, it is quite natural to subscribe into a certain data source and observe its changes. On top of that, it is convenient to be able to able refetch data anywhere in the application, and pass the fresh data to everyone interested in it.
