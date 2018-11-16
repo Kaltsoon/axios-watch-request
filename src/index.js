@@ -2,71 +2,60 @@ import EventEmitter from 'tiny-emitter';
 
 import { makeCache, makeWatchRequest, isFunction } from './utils';
 
-export default ({ adapter, cache = makeCache() } = {}) => {
+export default ({ adapter, cache = makeCache() } = {}) => {
   if (!isFunction(adapter)) {
     throw new Error('Adapter function is required');
   }
 
-	const eventEmitter = new EventEmitter();
-	
-	const enhancedAdapter = config => {
-  	const cacheValue = cache ? cache.get(config) : undefined;
-  
-  	if (cacheValue !== undefined) {
-    	eventEmitter.emit('data', {
-      	config,
-        payload: {
-        	loading: false,
-          data: cacheValue,
-          error: null,
-        },
-      });
-    }
-    
+  const eventEmitter = new EventEmitter();
+
+  const enhancedAdapter = config => {
+    const cacheValue = cache ? cache.get(config) : undefined;
+
     eventEmitter.emit('data', {
-    	config,
+      config,
       payload: {
-      	loading: true,
-        data: null,
+        loading: true,
+        data: cacheValue !== undefined ? cacheValue : null,
         error: null,
       },
     });
-    
+
     return adapter(config)
-    	.then(response => {
+      .then(response => {
         const parsedData = JSON.parse(response.data);
 
-      	eventEmitter.emit('data', {
-        	config,
+        eventEmitter.emit('data', {
+          config,
           payload: {
-          	loading: false,
-         		data: parsedData,
+            loading: false,
+            data: parsedData,
             error: null,
           },
         });
-        
+
         cache && cache.set(config, parsedData);
-      
-      	return response;
+
+        return response;
       })
       .catch(response => {
         const parsedData = JSON.parse(response.data);
 
-      	eventEmitter.emit('data', {
-        	config,
+        eventEmitter.emit('data', {
+          config,
           payload: {
-          	loading: false,
-         		data: null,
+            loading: false,
+            data: cacheValue !== undefined ? cacheValue : null,
             error: parsedData,
           },
         });
-        
-      	throw response;
+
+        throw response;
       });
   };
-  
+
   return {
-  	adapter: enhancedAdapter,
+    adapter: enhancedAdapter,
     watchRequest: makeWatchRequest(eventEmitter),
   };
 };

@@ -13,6 +13,17 @@
       "esm"
     ]
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "yarn prettier --write ./src/**",
+      "git add"
+    ]
+  },
   "dependencies": {
     "any-observable": "^0.3.0",
     "tiny-emitter": "^2.0.2"
@@ -21,6 +32,10 @@
     "ava": "^0.25.0",
     "axios": "^0.18.0",
     "esm": "^3.0.84",
+    "husky": "^1.1.4",
+    "lint-staged": "^8.0.4",
+    "prettier": "^1.15.2",
+    "sinon": "^7.1.1",
     "zen-observable": "^0.8.11"
   }
 }
