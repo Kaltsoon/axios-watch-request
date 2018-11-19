@@ -22,12 +22,16 @@ const client = axios.create({
 Now, you are ready watch any request by calling `watchRequest`, with your request's axios `config` object:
 
 ```javascript
-const observable = client.watchRequest({
+const observable = watchRequest({
   method: 'get',
   url: '/users/me',
 });
 
-client.get('/users/me');
+client.get('/users/me')
+  .then(() => {
+    // The first result of this request will come directly from the cache, and the actual result when the response arrives
+    client.get('/users/me');
+  }};
 
 observable.subscribe(({ loading, data, error }) => {
   // ...
