@@ -22,12 +22,12 @@ const client = axios.create({
 Now, you are ready watch any request by calling `watchRequest`, with your request's axios `config` object:
 
 ```javascript
-client.get('/users/me');
-
 const observable = client.watchRequest({
   method: 'get',
   url: '/users/me',
 });
+
+client.get('/users/me');
 
 observable.subscribe(({ loading, data, error }) => {
   // ...
