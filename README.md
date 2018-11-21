@@ -27,15 +27,15 @@ const observable = watchRequest({
   url: '/users/me',
 });
 
+observable.subscribe(({ loading, data, error }) => {
+  // ...
+});
+
 client.get('/users/me')
   .then(() => {
     // The first result of this request will come directly from the cache, and the actual result when the response arrives
     client.get('/users/me');
   }};
-
-observable.subscribe(({ loading, data, error }) => {
-  // ...
-});
 ```
 
 The library utilizes simple cache and it operates by "cache and network" policy. This means, that when request's response is in the cache, it is passed to the observable. After that, the actual request is made, and eventually its response is cached and passed to the observable. You can disable the cache by calling `createEnhancedAdapter` with `cache` option as `null`.
