@@ -19,7 +19,7 @@ npm install axios-watch-request
 First, define your own axios adapter, or use the default adapter, `axios.defaults.adapter`. Then pass your adapter to the `createEnhancedAdapter` function:
 
 ```javascript
-import Observable from 'zen-observable'; // You can also use any Observable implementation suitable for any-observable
+import 'any-observable/register/zen'; // You can also use any Observable implementation suitable for any-observable
 import createEnhancedAdapter from 'axios-watch-request';
 import axios from 'axios';
 
