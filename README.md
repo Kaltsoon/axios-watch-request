@@ -4,6 +4,16 @@
 
 [![Build Status](https://travis-ci.org/Kaltsoon/axios-watch-request.svg?branch=master)](https://travis-ci.org/Kaltsoon/axios-watch-request) [![npm version](https://badge.fury.io/js/axios-watch-request.svg)](https://badge.fury.io/js/axios-watch-request)
 
+## Install
+
+```
+yarn add axios-watch-request
+```
+
+```
+npm install axios-watch-request
+```
+
 ## How does it work?
 
 First, define your own axios adapter, or use the default adapter, `axios.defaults.adapter`. Then pass your adapter to the `createEnhancedAdapter` function:
