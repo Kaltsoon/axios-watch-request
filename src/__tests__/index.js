@@ -113,3 +113,56 @@ test('watchRequest subscription is called with cached data and fresh data', asyn
     error: null,
   });
 });
+
+test('When cache is disabled, no cached data is published', async t => {
+  let adapterCalls = 0;
+
+  const adapter = config => {
+    adapterCalls++;
+
+    return Promise.resolve({
+      data: JSON.stringify({ hello: adapterCalls === 1 ? 'world' : 'john' }),
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config,
+      request: {},
+    });
+  };
+
+  const { watchRequest, adapter: enhancedAdapter } = createEnhancedAdapter({
+    adapter,
+    cache: null,
+  });
+
+  const client = axios.create({
+    adapter: enhancedAdapter,
+  });
+
+  const subscription = spy();
+
+  client.get('/users/me');
+
+  await tick();
+
+  watchRequest({
+    method: 'get',
+    url: '/users/me',
+  }).subscribe(subscription);
+
+  client.get('/users/me');
+
+  await tick();
+
+  t.is(subscription.callCount, 2);
+  t.deepEqual(subscription.getCall(0).args[0], {
+    loading: true,
+    data: null,
+    error: null,
+  });
+  t.deepEqual(subscription.getCall(1).args[0], {
+    loading: false,
+    data: { hello: 'john' },
+    error: null,
+  });
+});

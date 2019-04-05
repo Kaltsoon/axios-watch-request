@@ -7,7 +7,8 @@ export default ({ adapter, cache: cacheArg, serializeConfig } = {}) => {
     throw new Error('Adapter function is required');
   }
 
-  const cache = cacheArg || makeCache({ serializeConfig });
+  const cache =
+    cacheArg === undefined ? makeCache({ serializeConfig }) : cacheArg;
 
   const eventEmitter = new EventEmitter();
 
