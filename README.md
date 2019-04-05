@@ -1,21 +1,24 @@
-# axios-watch-request
+# axios-watch-request :eyes:
 
-Axios adapter enhancer for turning request progress changes into an observable. **This library is still work in progress, use with caution!**.
+[Axios](https://github.com/axios/axios) adapter enhancer for observing request responses. **Requires an `Observable` implementation suitable for [any-observable](https://github.com/sindresorhus/any-observable)**.
 
 ## How does it work?
 
 First, define your own axios adapter, or use the default adapter, `axios.defaults.adapter`. Then pass your adapter to the `createEnhancedAdapter` function:
 
 ```javascript
+import Observable from 'zen-observable'; // You can also use any Observable implementation suitable for any-observable
 import createEnhancedAdapter from 'axios-watch-request';
 import axios from 'axios';
 
 const adapter = axios.defaults.adapter;
 
-const { adapter: enhancedAdapter, watchRequest } = createEnhancedAdapter({ adapter });
+const { adapter: enhancedAdapter, watchRequest } = createEnhancedAdapter({
+  adapter,
+});
 
 const client = axios.create({
-  adapter: enhancedAdapter
+  adapter: enhancedAdapter,
 });
 ```
 
@@ -42,4 +45,18 @@ The library utilizes simple cache and it operates by "cache and network" policy.
 
 ## Why do I need it?
 
-In the client applications, it is quite natural to subscribe into a certain data source and observe its changes. On top of that, it is convenient to be able to able refetch data anywhere in the application, and pass the fresh data to everyone interested in it.
+In the client applications, it is quite natural to subscribe to a certain data source and observe its changes. On top of that, it is convenient to able refetch data anywhere in the application, and pass the fresh data to everyone interested in it.
+
+## API
+
+### `Cache: { set: (AxiosRequestConfig, any) => void, get: (AxiosRequestConfig) => any }`
+
+Cache implementation
+
+### `createEnhancedAdapter({ adapter: AxiosAdapter, cache?: Cache }): { adapter: AxiosAdapter, watchRequest: (AxiosRequestConfig) => Observable }`
+
+`createcreateEnhancedAdapter` return an enhanced axios adapter, `adapter` and `watchRequest` function, which allows to subscribe to a request config. Setting `cache` option as `null` disables caching.
+
+## Tests
+
+Run `yarn test`
