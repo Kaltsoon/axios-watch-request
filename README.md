@@ -49,11 +49,15 @@ In the client applications, it is quite natural to subscribe to a certain data s
 
 ## API
 
+### `ConfigSerializer: (AxiosRequestConfig) => string`
+
+Function for serializing request config. Used by the default cache implementation and the adapter enhancer.
+
 ### `Cache: { set: (AxiosRequestConfig, any) => void, get: (AxiosRequestConfig) => any }`
 
-Cache implementation
+Cache implementation for `createEnhancedAdapter`.
 
-### `createEnhancedAdapter({ adapter: AxiosAdapter, cache?: Cache }): { adapter: AxiosAdapter, watchRequest: (AxiosRequestConfig) => Observable }`
+### `createEnhancedAdapter({ adapter: AxiosAdapter, cache?: Cache, serializeConfig?: ConfigSerializer }): { adapter: AxiosAdapter, watchRequest: (AxiosRequestConfig) => Observable }`
 
 `createcreateEnhancedAdapter` return an enhanced axios adapter, `adapter` and `watchRequest` function, which allows to subscribe to a request config. Setting `cache` option as `null` disables caching.
 

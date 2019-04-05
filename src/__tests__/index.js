@@ -4,23 +4,27 @@ import axios from 'axios';
 
 import createEnhancedAdapter from '../index';
 
-const wait = time => new Promise((resolve) => {
-  setTimeout(resolve, time);
-});
+const tick = () =>
+  new Promise(resolve => {
+    setTimeout(resolve);
+  });
 
-const makeSimpleAdapter = data => config => Promise.resolve({
-  data: JSON.stringify(data),
-  status: 200,
-  statusText: 'OK',
-  headers: {},
-  config,
-  request: {},
-});
+const makeSimpleAdapter = data => config =>
+  Promise.resolve({
+    data: JSON.stringify(data),
+    status: 200,
+    statusText: 'OK',
+    headers: {},
+    config,
+    request: {},
+  });
 
 test('watchRequest subscription is called correctly when new request is made', async t => {
   const adapter = makeSimpleAdapter({ hello: 'world' });
 
-  const { watchRequest, adapter: enhancedAdapter } = createEnhancedAdapter({ adapter });
+  const { watchRequest, adapter: enhancedAdapter } = createEnhancedAdapter({
+    adapter,
+  });
 
   const client = axios.create({
     adapter: enhancedAdapter,
@@ -35,11 +39,23 @@ test('watchRequest subscription is called correctly when new request is made', a
 
   client.get('/users/me');
 
-  await wait(500);
+  await tick();
+
+  client.get('/users/john');
+
+  await tick();
 
   t.is(subscription.callCount, 2);
-  t.deepEqual(subscription.getCall(0).args[0], { loading: true, error: null, data: null });
-  t.deepEqual(subscription.getCall(1).args[0], { loading: false, error: null, data: { hello: 'world' } });
+  t.deepEqual(subscription.getCall(0).args[0], {
+    loading: true,
+    error: null,
+    data: null,
+  });
+  t.deepEqual(subscription.getCall(1).args[0], {
+    loading: false,
+    error: null,
+    data: { hello: 'world' },
+  });
 });
 
 test('watchRequest subscription is called with cached data and fresh data', async t => {
@@ -56,9 +72,11 @@ test('watchRequest subscription is called with cached data and fresh data', asyn
       config,
       request: {},
     });
-  }
+  };
 
-  const { watchRequest, adapter: enhancedAdapter } = createEnhancedAdapter({ adapter });
+  const { watchRequest, adapter: enhancedAdapter } = createEnhancedAdapter({
+    adapter,
+  });
 
   const client = axios.create({
     adapter: enhancedAdapter,
@@ -68,18 +86,30 @@ test('watchRequest subscription is called with cached data and fresh data', asyn
 
   client.get('/users/me');
 
-  await wait(500);
-  
+  await tick();
+
   watchRequest({
     method: 'get',
     url: '/users/me',
   }).subscribe(subscription);
-  
+
   client.get('/users/me');
 
-  await wait(500);
+  await tick();
+
+  client.get('/users/john');
+
+  await tick();
 
   t.is(subscription.callCount, 2);
-  t.deepEqual(subscription.getCall(0).args[0], { loading: true, data: { hello: 'world' }, error: null });
-  t.deepEqual(subscription.getCall(1).args[0], { loading: false, data: { hello: 'john' }, error: null });
+  t.deepEqual(subscription.getCall(0).args[0], {
+    loading: true,
+    data: { hello: 'world' },
+    error: null,
+  });
+  t.deepEqual(subscription.getCall(1).args[0], {
+    loading: false,
+    data: { hello: 'john' },
+    error: null,
+  });
 });

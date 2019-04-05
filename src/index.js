@@ -2,10 +2,12 @@ import EventEmitter from 'tiny-emitter';
 
 import { makeCache, makeWatchRequest, isFunction } from './utils';
 
-export default ({ adapter, cache = makeCache() } = {}) => {
+export default ({ adapter, cache: cacheArg, serializeConfig } = {}) => {
   if (!isFunction(adapter)) {
     throw new Error('Adapter function is required');
   }
+
+  const cache = cacheArg || makeCache({ serializeConfig });
 
   const eventEmitter = new EventEmitter();
 
@@ -56,6 +58,6 @@ export default ({ adapter, cache = makeCache() } = {}) => {
 
   return {
     adapter: enhancedAdapter,
-    watchRequest: makeWatchRequest(eventEmitter),
+    watchRequest: makeWatchRequest({ eventEmitter, serializeConfig }),
   };
 };

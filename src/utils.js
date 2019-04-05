@@ -16,7 +16,7 @@ export const serializeObject = val => {
   return '';
 };
 
-export const serializeConfig = config => {
+export const defaultSerializeConfig = config => {
   return `${config.method.toLowerCase()}__${config.url}__${
     config.params ? serializeObject(config.params) : ''
   }`;
@@ -29,7 +29,7 @@ export const isValidConfig = config =>
 
 export const isFunction = val => toString.call(val) === '[object Function]';
 
-export const makeCache = () => {
+export const makeCache = ({ serializeConfig = defaultSerializeConfig }) => {
   const cache = {};
 
   return {
@@ -44,7 +44,10 @@ export const makeCache = () => {
   };
 };
 
-export const makeWatchRequest = eventEmitter => {
+export const makeWatchRequest = ({
+  eventEmitter,
+  serializeConfig = defaultSerializeConfig,
+}) => {
   return config =>
     new Observable(observer => {
       const callback = data => {
