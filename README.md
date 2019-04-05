@@ -57,7 +57,7 @@ The library utilizes simple cache and it operates by "cache and network" policy.
 
 ## Why do I need it?
 
-In the client applications, it is quite natural to subscribe to a certain data source and observe its changes. On top of that, it is convenient to able refetch data anywhere in the application, and pass the fresh data to everyone interested in it.
+In client applications, it is quite natural to subscribe to a certain data source and observe its changes. On top of that, it is convenient to able refetch data anywhere in the application, and pass the fresh data to everyone interested in it.
 
 ## API
 
@@ -71,7 +71,7 @@ Cache implementation for `createEnhancedAdapter`.
 
 ### `createEnhancedAdapter({ adapter: AxiosAdapter, cache?: Cache, serializeConfig?: ConfigSerializer }): { adapter: AxiosAdapter, watchRequest: (AxiosRequestConfig) => Observable }`
 
-`createcreateEnhancedAdapter` return an enhanced axios adapter, `adapter` and `watchRequest` function, which allows to subscribe to a request config. Setting `cache` option as `null` disables caching.
+`createEnhancedAdapter` return an enhanced axios adapter, `adapter` and `watchRequest` function, which allows to subscribe to a request config. Setting `cache` option as `null` disables caching.
 
 ## Tests
 
