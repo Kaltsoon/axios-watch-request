@@ -2,6 +2,8 @@
 
 [Axios](https://github.com/axios/axios) adapter enhancer for observing request responses. **Requires an `Observable` implementation suitable for [any-observable](https://github.com/sindresorhus/any-observable)**.
 
+[![Build Status](https://travis-ci.org/Kaltsoon/axios-watch-request.svg?branch=master)](https://travis-ci.org/Kaltsoon/axios-watch-request) [![npm version](https://badge.fury.io/js/axios-watch-request.svg)](https://badge.fury.io/js/axios-watch-request)
+
 ## How does it work?
 
 First, define your own axios adapter, or use the default adapter, `axios.defaults.adapter`. Then pass your adapter to the `createEnhancedAdapter` function:
